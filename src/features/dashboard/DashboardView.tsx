@@ -53,7 +53,12 @@ export function DashboardView() {
   const [profile] = useProfile();
   const { user } = useAuth();
 
-  const name = profile.name.trim() || user?.displayName?.trim() || d.defaultName;
+  const name =
+    profile.name.trim() ||
+    user?.user_metadata?.full_name?.trim() ||
+    user?.user_metadata?.name?.trim() ||
+    user?.email?.split("@")[0] ||
+    d.defaultName;
 
   const header = (
     <PageHeader title={format(d.welcome, { name })} subtitle={d.subtitle} />
