@@ -1,0 +1,38 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Each user can only touch their own documents, and only the keys the app uses.
+    match /users/{userId}/data/{key} {
+      function ownsDoc() {
+        return request.auth != null && request.auth.uid == userId;
+      }
+      function allowedKey() {
+        return key in [
+          'studymate-tasks',
+          'studymate-notes',
+          'studymate-chats',
+          'studymate-profile',
+          'studymate-notifications',
+          'studymate-quiz-best'
+        ];
+      }
+
+      allow read: if ownsDoc() && allowedKey();
+
+      allow create, update: if ownsDoc() && allowedKey()
+        && request.resource.data.keys().hasOnly(['json', 'updatedAt'])
+        && request.resource.data.json is string
+        && request.resource.data.json.size() < 900000
+        && request.resource.data.updatedAt == request.time;
+
+      allow delete: if ownsDoc();
+    }
+
+    // Everything else is closed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "apphosting": {
+    "backendId": "studymate-ai",
+    "rootDir": "/",
+    "ignore": ["node_modules", ".git", "firebase-debug.*.log", "*.local"]
+  }
+}

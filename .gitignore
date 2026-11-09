@@ -1,0 +1,20 @@
+node_modules
+.next
+out
+next-env.d.ts
+*.tsbuildinfo
+.env
+.env.local
+.DS_Store
+.firebase
+firebase-debug.log
+.firebaserc
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Dependencies and build output
+node_modules
+.next
